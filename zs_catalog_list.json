@@ -1,0 +1,140 @@
+{
+    "V/50/catalog": {
+        "catalog_name": "Bright Star Catalogue, 5th Revised Ed",
+        "obj_count": 9110,
+        "id": "HR",
+        "RA": {
+            "column": "RAJ2000",
+            "format": "hour"
+        },
+        "Dec": {
+            "column": "DEJ2000",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["Vmag"],
+            "limit": 6.5
+        }
+    },
+    "I/239/hip_main": {
+        "catalog_name": "The Hipparcos Main Catalogue",
+        "obj_count": 118218,
+        "id": "HIP",
+        "RA": {
+            "column": "RAICRS",
+            "format": "deg"
+        },
+        "Dec": {
+            "column": "DEICRS",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["Vmag"],
+            "limit": 12.4
+        }
+    },
+    "I/259/tyc2": {
+        "catalog_name": "The Tycho-2 main catalogue",
+        "obj_count": 2539913,
+        "id": "HIP",
+        "RA": {
+            "column": "RA_ICRS_",
+            "format": "deg"
+        },
+        "Dec": {
+            "column": "DE_ICRS_",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["VTmag", "BTmag"],
+            "conversion": "VTmag - 0.090 * (BTmag - VTmag)",
+            "limit": 11.5
+        }
+    },
+    "I/322A/out": {
+        "catalog_name": "Fourth U.S. Naval Observatory CCD Astrograph Catalog",
+        "obj_count": 113780093,
+        "id": "UCAC4",
+        "RA": {
+            "column": "RAJ2000",
+            "format": "deg"
+        },
+        "Dec": {
+            "column": "DEJ2000",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["Vmag"],
+            "limit": 16
+        }
+    },
+    "I/317/sample": {
+        "catalog_name": "The PPMXL Catalog",
+        "obj_count": 910469430,
+        "id": "PPMXL",
+        "RA": {
+            "column": "RAJ2000",
+            "format": "deg"
+        },
+        "Dec": {
+            "column": "DEJ2000",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["imag"],
+            "limit": 20
+        }
+    },
+    "I/297/out": {
+        "catalog_name": "The NOMAD-1 Catalog",
+        "obj_count": 1117612732,
+        "id": "NOMAD1",
+        "RA": {
+            "column": "RAJ2000",
+            "format": "deg"
+        },
+        "Dec": {
+            "column": "DEJ2000",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["Vmag"],
+            "limit": 21
+        }
+    },
+    "IV/39/tic82": {
+        "catalog_name": "TESS Input Catalog version 8.2 (TIC v8.2)",
+        "obj_count": 1727987580,
+        "id": "TIC",
+        "RA": {
+            "column": "RAJ2000",
+            "format": "deg"
+        },
+        "Dec": {
+            "column": "DEJ2000",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["Vmag"],
+            "limit": 20
+        }
+    },
+    "I/355/gaiadr3": {
+        "catalog_name": "Gaia data release 3 (Gaia DR3)",
+        "obj_count": 1811709771,
+        "id": "Source",
+        "RA": {
+            "column": "RA_ICRS",
+            "format": "deg"
+        },
+        "Dec": {
+            "column": "DE_ICRS",
+            "format": "deg"
+        },
+        "visual_mag": {
+            "columns": ["Gmag", "BPmag", "RPmag"],
+            "conversion": "Gmag + 0.0176 + 0.00686*(BPmag-RPmag) + 0.1732*(BPmag-RPmag)**2",
+            "limit": 21
+        }
+    }
+}
