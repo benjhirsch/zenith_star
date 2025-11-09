@@ -2,7 +2,10 @@
     "V/50/catalog": {
         "catalog_name": "Bright Star Catalogue, 5th Revised Ed",
         "obj_count": 9110,
-        "id": "HR",
+        "obj_id": {
+            "columns": ["HR"],
+            "format": "HR {HR}"
+        },
         "RA": {
             "column": "RAJ2000",
             "format": "hour"
@@ -19,7 +22,10 @@
     "I/239/hip_main": {
         "catalog_name": "The Hipparcos Main Catalogue",
         "obj_count": 118218,
-        "id": "HIP",
+        "obj_id": {
+            "columns": ["HIP"],
+            "format": "HIP {HIP}"
+        },
         "RA": {
             "column": "RAICRS",
             "format": "deg"
@@ -36,7 +42,10 @@
     "I/259/tyc2": {
         "catalog_name": "The Tycho-2 main catalogue",
         "obj_count": 2539913,
-        "id": "HIP",
+        "obj_id": {
+            "columns": ["TYC1", "TYC2", "TYC3"],
+            "format": "TYC {TYC1}-{TYC2}-{TYC3}"
+        },
         "RA": {
             "column": "RA_ICRS_",
             "format": "deg"
@@ -54,7 +63,10 @@
     "I/322A/out": {
         "catalog_name": "Fourth U.S. Naval Observatory CCD Astrograph Catalog",
         "obj_count": 113780093,
-        "id": "UCAC4",
+        "obj_id": {
+            "columns": ["UCAC4"],
+            "format": "UCAC4 {UCAC4}"
+        },
         "RA": {
             "column": "RAJ2000",
             "format": "deg"
@@ -71,7 +83,10 @@
     "I/317/sample": {
         "catalog_name": "The PPMXL Catalog",
         "obj_count": 910469430,
-        "id": "PPMXL",
+        "obj_id": {
+            "columns": ["PPMXL"],
+            "format": "PPMXL {PPMXL}"
+        },
         "RA": {
             "column": "RAJ2000",
             "format": "deg"
@@ -88,7 +103,10 @@
     "I/297/out": {
         "catalog_name": "The NOMAD-1 Catalog",
         "obj_count": 1117612732,
-        "id": "NOMAD1",
+        "obj_id": {
+            "columns": ["NOMAD1"],
+            "format": "NOMAD1 {NOMAD1}"
+        },
         "RA": {
             "column": "RAJ2000",
             "format": "deg"
@@ -105,7 +123,10 @@
     "IV/39/tic82": {
         "catalog_name": "TESS Input Catalog version 8.2 (TIC v8.2)",
         "obj_count": 1727987580,
-        "id": "TIC",
+        "obj_id": {
+            "columns": ["TIC"],
+            "format": "TIC {TIC}"
+        },
         "RA": {
             "column": "RAJ2000",
             "format": "deg"
@@ -122,7 +143,10 @@
     "I/355/gaiadr3": {
         "catalog_name": "Gaia data release 3 (Gaia DR3)",
         "obj_count": 1811709771,
-        "id": "Source",
+        "obj_id": {
+            "columns": ["Source"],
+            "format": "Gaia DR3 {Source}"
+        },
         "RA": {
             "column": "RA_ICRS",
             "format": "deg"

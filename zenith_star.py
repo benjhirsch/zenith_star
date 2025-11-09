@@ -183,8 +183,12 @@ zenith_star_dec = to_angle(zenith_star[catalog_specs['Dec']['column']], catalog_
 zenith_star_coords = SkyCoord(ra=zenith_star_ra, dec=zenith_star_dec, unit='deg', frame='icrs') if args.brightest else star_coords[min_idx]
 zenith_star_altaz = zenith_star_coords.transform_to(altaz_frame)
 
+zenith_star_id = catalog_specs['obj_id']['format']
+for var in catalog_specs['obj_id']['columns']:
+    zenith_star_id = zenith_star_id.replace('{%s}' % var, str(zenith_star[var]))
+
 print('\n%s' % zenith_text)
-print('\nCatalog ID: %s %s' % (catalog_specs['id'], zenith_star[catalog_specs['id']]))
+print('\nCatalog ID: %s' % zenith_star_id)
 print('Altitude: %.2f\u00b0' % Angle(zenith_star_altaz.alt).deg)
 print('Azimuth: %.2f\u00b0' % Angle(zenith_star_altaz.az).deg)
 print('RA: %.2f\u00b0' % zenith_star_ra.deg)
