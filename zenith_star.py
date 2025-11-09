@@ -63,12 +63,21 @@ elif args.address:
     print('\nCalculating location...')
     geolocator = Nominatim(user_agent='zenith_star')
     obs_loc = geolocator.geocode(args.address)
-    obs_lat = obs_loc.latitude
-    obs_lon = obs_loc.longitude
+    try:
+        obs_lat = obs_loc.latitude
+        obs_lon = obs_loc.longitude
+    except:
+        print('Invalid or unrecognized address.')
+        sys.exit()
 elif args.latlong:
     obs_lat, obs_lon = map(float, args.latlong)
 
-obs_earth = EarthLocation(lat=obs_lat*u.deg, lon=obs_lon*u.deg)
+try:
+    obs_earth = EarthLocation(lat=obs_lat*u.deg, lon=obs_lon*u.deg)
+except:
+    print('Invalid latitude/longitude.')
+    sys.exit()
+
 print('Location: Latitude: %.2f\u00b0 %s, Longitude: %.2f\u00b0 %s' % (obs_lat, 'S' if obs_lat < 0 else 'N', abs(obs_lon), 'W' if obs_lon < 0 else 'E'))
 
 #get timezone based on latitude and longitude
@@ -79,9 +88,13 @@ print('Timezone: %s' % tz_str)
 
 #get local datetime
 if args.datetime:
-    local_datetime = parse(args.datetime).replace(tzinfo=obs_timezone)
+    try:
+        local_datetime = parse(args.datetime).replace(tzinfo=obs_timezone)
+    except:
+        print('Invalid or unrecognized date.')
+        sys.exit()
 else:
-    local_datetime = datetime.now(tzinfo=obs_timezone)
+    local_datetime = datetime.now(tz=obs_timezone)
 
 #convert local datetime to utc time
 obs_time_utc = Time(local_datetime.astimezone(timezone.utc), scale='utc')
