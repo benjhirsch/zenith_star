@@ -17,9 +17,17 @@ With this command, Zenith Star will calculate the celestial coordinates of the p
 --brightest: Include to return the brightest star in the search area rather than the one closest to it.  
 --catalog: Star catalog to query. The default is determined dynamically based on the limiting magnitude. A list of catalogs can be found in [zs_catalog_list.json](zs_catalog_list.json), which can be expanded.  
 --catalog-desc: This option will get the details of one or all the available star catalogs, print them, and exit.  
+--display: Include to display a visualization of stars found in the search area, including size and color. Default is 10 if no number given.
 
 ## Usage Tips
 * Increasing the limiting magnitude will return many more stars. Be sure to constrain the search area more tightly for higher magnitudes/larger catalogs.
 * The coordinates of the zenith are very sensitive to time. 1 minute = 0.25 degrees (about half the width of a full moon) of movement across the sky. For approximate times, you may want to specify a --search-box with a width proportional to the time range.
 * Precise geographic coordinates matter less. A 0.25 degree difference on the sky corresponds to ~28 km on the ground.
 * When uncertainty is large and many stars are found near the zenith, you may want to return the --brightest star in the search area rather than the one that happens to be closest to the calculated zenith.
+
+## Installation
+Clone or otherwise download this repository, then run "pip install -r requirements.txt" from the zenith_star directory. Several modules are optional and not included in requirements.txt. They are:
+* geopy: Only necessary to convert the --address parameter to latitude and longitude.
+* python-dateutil: Only necessary if you don't use ISO date format ("YYYY-MM-DD HH:MM:SS") with --datetime.
+* pandas, plotly, and numpy: Only necessary with the --display option.
+* simpleeval: Only necessary for certain catalogs where magnitude values need to be converted from one system to another (those with a "conversion" attribute in zs_catalog_list.json).
