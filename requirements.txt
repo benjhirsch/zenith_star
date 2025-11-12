@@ -1,6 +1,3 @@
-geopy
-astropy
 timezonefinder
-dateutil
+astropy
 astroquery
-simpleeval

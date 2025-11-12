@@ -14,9 +14,10 @@
             "column": "DEJ2000",
             "format": "deg"
         },
-        "visual_mag": {
-            "columns": ["Vmag"],
-            "limit": 6.5
+        "magnitude": {
+            "columns": ["Vmag", "B-V"],
+            "limit": 6.5,
+            "b-v": "B-V"
         }
     },
     "I/239/hip_main": {
@@ -34,9 +35,10 @@
             "column": "DEICRS",
             "format": "deg"
         },
-        "visual_mag": {
-            "columns": ["Vmag"],
-            "limit": 12.4
+        "magnitude": {
+            "columns": ["Vmag", "B-V"],
+            "limit": 12.4,
+            "b-v": "B-V"
         }
     },
     "I/259/tyc2": {
@@ -54,9 +56,10 @@
             "column": "DE_ICRS_",
             "format": "deg"
         },
-        "visual_mag": {
+        "magnitude": {
             "columns": ["VTmag", "BTmag"],
-            "conversion": "VTmag - 0.090 * (BTmag - VTmag)",
+            "visual_mag_conversion": "VTmag - 0.090 * (BTmag - VTmag)",
+            "b-v_conversion": "0.850 * (BTmag - VTmag)",
             "limit": 11.5
         }
     },
@@ -75,9 +78,10 @@
             "column": "DEJ2000",
             "format": "deg"
         },
-        "visual_mag": {
-            "columns": ["Vmag"],
-            "limit": 16
+        "magnitude": {
+            "columns": ["Vmag", "Bmag"],
+            "limit": 16,
+            "b-v_conversion": "Bmag - Vmag"
         }
     },
     "I/317/sample": {
@@ -95,9 +99,10 @@
             "column": "DEJ2000",
             "format": "deg"
         },
-        "visual_mag": {
-            "columns": ["imag"],
-            "limit": 20
+        "magnitude": {
+            "columns": ["imag", "b2mag"],
+            "limit": 20,
+            "b-v_conversion": "b2mag - imag"
         }
     },
     "I/297/out": {
@@ -115,9 +120,10 @@
             "column": "DEJ2000",
             "format": "deg"
         },
-        "visual_mag": {
-            "columns": ["Vmag"],
-            "limit": 21
+        "magnitude": {
+            "columns": ["Vmag", "Bmag"],
+            "limit": 21,
+            "b-v_conversion": "Bmag - Vmag"
         }
     },
     "IV/39/tic82": {
@@ -135,9 +141,10 @@
             "column": "DEJ2000",
             "format": "deg"
         },
-        "visual_mag": {
-            "columns": ["Vmag"],
-            "limit": 20
+        "magnitude": {
+            "columns": ["Vmag", "Bmag"],
+            "limit": 20,
+            "b-v_conversion": "Bmag - Vmag"
         }
     },
     "I/355/gaiadr3": {
@@ -155,10 +162,11 @@
             "column": "DE_ICRS",
             "format": "deg"
         },
-        "visual_mag": {
-            "columns": ["Gmag", "BPmag", "RPmag"],
-            "conversion": "Gmag + 0.0176 + 0.00686*(BPmag-RPmag) + 0.1732*(BPmag-RPmag)**2",
-            "limit": 21
+        "magnitude": {
+            "columns": ["Gmag", "BPmag", "RPmag", "Teff"],
+            "visual_mag_conversion": "Gmag + 0.0176 + 0.00686*(BPmag-RPmag) + 0.1732*(BPmag-RPmag)**2",
+            "limit": 21,
+            "temp": "Teff"
         }
     }
 }
