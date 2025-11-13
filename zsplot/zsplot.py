@@ -1,5 +1,12 @@
 import numpy as np
 
+def round_to(number, sig_figs):
+    sig_figs -= 1
+    try:
+        return round(number, -int(np.floor(np.log10(number)) - sig_figs))
+    except:
+        0
+
 def delta_ra(ra, zenith_ra, zenith_dec):
     #small angle approximation of gnomonic projection to account for high declination
     return (ra - zenith_ra) * np.cos(zenith_dec)
