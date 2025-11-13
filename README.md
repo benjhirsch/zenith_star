@@ -17,8 +17,8 @@ With this command, Zenith Star will calculate the celestial coordinates of the p
 --brightest: Include to return the brightest star in the search area rather than the one closest to it.  
 --catalog: Star catalog to query. The default is determined dynamically based on the limiting magnitude. A list of catalogs can be found in [zs_catalog_list.json](zs_catalog_list.json), which can be expanded.  
 --catalog-desc: This option will get the details of one or all the available star catalogs, print them, and exit.  
---display: Include to display a visualization of stars found in the search area, including size and color. Default is 10 if no number given.
---disable-cache: Include to disable caching of address, datetime, Vizier queries.
+--display: Include to display a visualization of stars found in the search area, including size and color. Default is 10 if no number given.  
+--disable-cache: Include to disable caching of address, datetime, Vizier queries.  
 --clear-cache: Include to delete cache files, then exit.
 
 ## Usage Tips
