@@ -11,27 +11,9 @@ from astropy.time import Time
 from astropy.utils.exceptions import AstropyDeprecationWarning
 from astroquery.vizier import Vizier
 
-from zsparse import zsparse
-from zsconvert import zsconvert
+from utils import convert, input_parse
 
 #todo: fixing delta_ra for large search areas near zenith at 0 degrees ra?
-
-def to_angle(theta, theta_format):
-    #handles hms/dms strings
-    return Angle(theta if isinstance(theta, float) else tuple(float(a) for a in theta.split()), unit=theta_format)
-
-def star_id(obj_id, star):
-    #format star id string
-    star_id_str = obj_id['format']
-    for var in obj_id['columns']:
-        star_id_str = star_id_str.replace('{%s}' % var, str(star[var]))
-    return star_id_str
-
-def make_float(x):
-    try:
-        return float(x)
-    except:
-        return x
 
 warnings.simplefilter('ignore', AstropyDeprecationWarning)
 warnings.simplefilter('error', UserWarning)
@@ -73,23 +55,23 @@ if args.catalog_desc:
         print('Limiting magnitude: %s' % catalog_list[catalog]['magnitude']['limit'])
     
     sys.exit()
-elif args.address:
-    #get latitude and longitude of street address
-    obs_lat, obs_lon = zsparse.addr_parse(args.address, not args.disable_cache)
-elif args.latlong:
-    obs_lat, obs_lon = args.latlong
 elif args.clear_cache:
     #clear address, datetime, and vizier caches
-    if os.path.exists(zsparse.addr_cache_path):
-        os.remove(zsparse.addr_cache_path)
+    if os.path.exists(input_parse.addr_cache_path):
+        os.remove(input_parse.addr_cache_path)
         print('Address cache cleared.')
-    if os.path.exists(zsparse.datetime_cache_path):
-        os.remove(zsparse.datetime_cache_path)
+    if os.path.exists(input_parse.datetime_cache_path):
+        os.remove(input_parse.datetime_cache_path)
         print('Datetime cache cleared.')
     if os.path.exists(vizier_cache_path):
         os.remove(vizier_cache_path)
         print('Vizier cache cleared.')
     sys.exit()
+elif args.address:
+    #get latitude and longitude of street address
+    obs_lat, obs_lon = input_parse.addr_parse(args.address, not args.disable_cache)
+elif args.latlong:
+    obs_lat, obs_lon = args.latlong
 
 #turn lat and long into coordinate object
 try:
@@ -102,7 +84,7 @@ print('Location: Latitude: %.2f\u00b0 %s, Longitude: %.2f\u00b0 %s' % (obs_lat, 
 
 #get timezone based on latitude and longitude
 lon_time_offset = obs_lon / 15 * u.hour
-print('Longitude-based time offset: %s' % lon_time_offset)
+print('Longitude-based time offset: %.2f hours' % lon_time_offset.value)
 
 #get local datetime
 if args.datetime:
@@ -111,7 +93,7 @@ if args.datetime:
         local_datetime = datetime.fromisoformat(args.datetime)
     except:
         #otherwise, parse with dateutils
-        local_datetime = zsparse.dt_parse(args.datetime, not args.disable_cache)
+        local_datetime = input_parse.dt_parse(args.datetime, not args.disable_cache)
 else:
     #or just use the current time if none given
     local_datetime = datetime.now()
@@ -165,13 +147,13 @@ if vizier_sig in vizier_cache:
     star_list = vizier_cache[vizier_sig]
     for star in star_list:
         for col in mag_cols:
-            star[col] = make_float(star[col])
+            star[col] = convert.make_float(star[col])
         
         if ra_format == 'deg':
-            star[ra_col] = make_float(star[ra_col])
+            star[ra_col] = convert.make_float(star[ra_col])
 
         if dec_format == 'deg':
-            star[dec_col] = make_float(star[dec_col])
+            star[dec_col] = convert.make_float(star[dec_col])
 else:
     #create Vizier catalog object with selected catalog's standard columns plus magnitude columns.
     vizier = Vizier(columns=['*', *mag_cols], catalog=catalog)
@@ -210,7 +192,7 @@ else:
 if 'visual_mag_conversion' in catalog_mag:
     under_star_list = []
     for star in star_list:
-        vmag = zsconvert.to_vmag(star, mag_cols, catalog_mag['visual_mag_conversion'])
+        vmag = convert.to_vmag(star, mag_cols, catalog_mag['visual_mag_conversion'])
         try:
             if vmag <= args.limiting_mag:
                 under_star_list.append(star)
@@ -227,8 +209,8 @@ if args.brightest:
     zenith_text = 'Brightest star near zenith identified.'
 else:
     #get coordinates of candidate stars
-    ra_list = [to_angle(star[ra_col], ra_format) for star in star_list]
-    dec_list = [to_angle(star[dec_col], dec_format) for star in star_list]
+    ra_list = [convert.to_angle(star[ra_col], ra_format) for star in star_list]
+    dec_list = [convert.to_angle(star[dec_col], dec_format) for star in star_list]
     star_coords = SkyCoord(ra=ra_list*u.deg, dec=dec_list*u.deg, frame='icrs')
 
     #get angle separation between zenith and candidate stars
@@ -238,12 +220,12 @@ else:
 #find star with minimized parameter (either magnitude or separation), i.e. zenith star
 min_idx = min(min_list, key=lambda x: x[0])[1]
 zenith_star = star_list[min_idx]
-zenith_star_ra = to_angle(zenith_star[ra_col], ra_format) if args.brightest else ra_list[min_idx]
-zenith_star_dec = to_angle(zenith_star[dec_col], dec_format) if args.brightest else dec_list[min_idx]
+zenith_star_ra = convert.to_angle(zenith_star[ra_col], ra_format) if args.brightest else ra_list[min_idx]
+zenith_star_dec = convert.to_angle(zenith_star[dec_col], dec_format) if args.brightest else dec_list[min_idx]
 zenith_star_coords = SkyCoord(ra=zenith_star_ra, dec=zenith_star_dec, unit='deg', frame='icrs') if args.brightest else star_coords[min_idx]
 zenith_star_altaz = zenith_star_coords.transform_to(altaz_frame)
 
-zenith_star_id = star_id(catalog_specs['obj_id'], zenith_star)
+zenith_star_id = convert.star_id(catalog_specs['obj_id'], zenith_star)
 
 print('\n%s' % zenith_text)
 print('\nCatalog ID: %s' % zenith_star_id)
@@ -254,25 +236,25 @@ print('Dec: %.2f\u00b0' % zenith_star_dec.deg)
 print('%s magnitude: %s' % (mag_cols[0], zenith_star[mag_cols[0]]))
 
 if args.display:
-    from zsplot import zsplot
+    from utils import plot
 
     sorted_min_list = sorted(min_list, key=lambda x:x[0])
     display_stars_list = []
 
     #display lesser of number of found stars or user-given number
     for stat, n in sorted_min_list[:min([len(min_list), args.display])]:
-        ra = to_angle(star_list[n][ra_col], ra_format) if args.brightest else ra_list[n]
-        dec = to_angle(star_list[n][dec_col], dec_format) if args.brightest else dec_list[n]
-        
+        ra = convert.to_angle(star_list[n][ra_col], ra_format) if args.brightest else ra_list[n]
+        dec = convert.to_angle(star_list[n][dec_col], dec_format) if args.brightest else dec_list[n]
+
         coords = SkyCoord(ra=ra, dec=dec, unit='deg', frame='icrs') if args.brightest else star_coords[n]
         altaz = coords.transform_to(altaz_frame)
         
         mag = stat if args.brightest else star_list[n][mag_cols[0]]
 
-        display_star_id = star_id(catalog_specs['obj_id'], star_list[n])
-        
-        delta_ra = zsplot.delta_ra(ra, zenith_radec.ra, zenith_radec.dec)
-        delta_dec = zsplot.delta_dec(dec, zenith_radec.dec)
+        display_star_id = convert.star_id(catalog_specs['obj_id'], star_list[n])
+
+        delta_ra = plot.delta_ra(ra, zenith_radec.ra, zenith_radec.dec)
+        delta_dec = plot.delta_dec(dec, zenith_radec.dec)
 
         #convert B-V color index or temperature to rgb for display purposes
         if 'temp' in catalog_mag:
@@ -281,15 +263,15 @@ if args.display:
             if 'b-v' in catalog_mag:
                 bv = star_list[n][catalog_mag['b-v']]
             elif 'b-v_conversion' in catalog_mag:
-                bv = zsconvert.to_bv(star_list[n], mag_cols, catalog_mag['b-v_conversion'])
+                bv = convert.to_bv(star_list[n], mag_cols, catalog_mag['b-v_conversion'])
             else:
                 bv = None
 
-            temp = zsplot.bv_to_temp(bv)
+            temp = plot.bv_to_temp(bv)
 
-        rgb = zsplot.temp_to_rgb(temp)
+        rgb = plot.temp_to_rgb(temp)
 
-        display_stars_list.append({'RA': ra.deg, 'Dec': dec.deg, 'Alt': altaz.alt.deg, 'Az': altaz.az.deg, 'Mag': mag, 'ID': display_star_id, 'delta_RA': -delta_ra.deg, 'delta_Dec': delta_dec.deg, 'rgb': '#%02x%02x%02x' % tuple(rgb), 'Temp': zsplot.round_to(temp, 2)})
+        display_stars_list.append({'RA': ra.deg, 'Dec': dec.deg, 'Alt': altaz.alt.deg, 'Az': altaz.az.deg, 'Mag': mag, 'ID': display_star_id, 'delta_RA': -delta_ra.deg, 'delta_Dec': delta_dec.deg, 'rgb': '#%02x%02x%02x' % tuple(rgb), 'Temp': plot.round_to(temp, 2)})
 
     if args.search_box:
         search_x = search_width / 2
@@ -298,6 +280,6 @@ if args.display:
         search_x = search_radius
         search_y = search_radius
 
-    fig = zsplot.zenith_field(display_stars_list, search_x, search_y, zenith_radec.ra.deg, zenith_radec.dec.deg, args.brightest)
+    fig = plot.zenith_field(display_stars_list, search_x, search_y, zenith_radec.ra.deg, zenith_radec.dec.deg, args.brightest)
     
     fig.show()

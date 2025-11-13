@@ -42,3 +42,21 @@ def to_bv(star, mag_cols, bv_conversion):
         bv = None
 
     return bv
+
+def to_angle(theta, theta_format):
+    from astropy.coordinates import Angle
+    #handles hms/dms strings
+    return Angle(theta if isinstance(theta, float) else tuple(float(a) for a in theta.split()), unit=theta_format)
+
+def make_float(x):
+    try:
+        return float(x)
+    except:
+        return x
+    
+def star_id(obj_id, star):
+    #format star id string
+    star_id_str = obj_id['format']
+    for var in obj_id['columns']:
+        star_id_str = star_id_str.replace('{%s}' % var, str(star[var]))
+    return star_id_str
