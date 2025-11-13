@@ -5,12 +5,12 @@ Zenith Star is a command line tool that takes as input a time and location, then
 
 The basic command for running the tool is:
 
-python zenith_star.py --datetime "[date in any common format, but preferably ISO (YYYY-MM-DD HH:MM:SS)]" --latlong "[two numbers, separated by a space, e.g. 38.9 -77.0]"
+python zenith_star.py --datetime "[date in any common format, but preferably ISO (YYYY-MM-DD HH:MM:SS)]" --latlong [two numbers, separated by a space, e.g. 38.9 -77.0]
 
 With this command, Zenith Star will calculate the celestial coordinates of the point directly overhead, query the [Bright Star Catalogue](https://en.wikipedia.org/wiki/Bright_Star_Catalogue) for all stars brighter than 6th magnitude (the standard limit of naked-eye vision) within 2° of that point, and return the one closest to it.
 
 ## Optional Parameters
---address: Instead of latlong, provide an address in any common format. Address will be parsed to return latitude and longitude.  
+--address: Instead of --latlong, provide an address in any common format. Address will be parsed to return latitude and longitude.  
 --limiting-mag: Limiting magnitude, i.e. the minimum brightness. Stars above this limit (higher=dimmer) will not be returned. The default is 6, the approximate naked-eye limit.  
 --search-radius: Radius in degrees of the search area around the zenith. Default is 2 degrees.  
 --search-box: Alternatively, define a search box (two numbers, height and width) in degrees centered on the zenith.  
